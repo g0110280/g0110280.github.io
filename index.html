@@ -1,1 +1,40 @@
-It Works!
+<head>
+  <style>
+    .hexagon-middle {
+      width: 60px;
+      height: 104px;
+      background-color: black;
+    }
+
+    .hexagon-left {
+      width: 0;
+      border-right: 30px solid black;
+      border-top: 52px solid transparent;
+      border-bottom: 52px solid transparent;
+    }
+
+    .hexagon-right {
+      width: 0;
+      border-left: 30px solid black;
+      border-top: 52px solid transparent;
+      border-bottom: 52px solid transparent;
+    }
+
+    .hexagon * {
+      display: inline-block;
+    }
+
+    .hexagon * + * {
+      margin-left: -4px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="hexagon">
+    <span class="hexagon-left"></span>
+    <span class="hexagon-middle"></span>
+    <span class="hexagon-right"></span>
+  </div>
+
+</body>
