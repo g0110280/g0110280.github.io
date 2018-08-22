@@ -6,7 +6,6 @@
       width: 100vw;
       overflow: hidden;
       position: relative;
-      z-index: 0;
     }
     .star {
       position: absolute;
@@ -15,67 +14,46 @@
       width: 20px;
       border-radius: 10px;
       display: inline-block;
-      z-index: 2;
-      /*top: 10px;
-      left: 10px;*/
     }
-    .zone1, .zone2, .zone3, .zone4 {
+    .zone1 {
       position: absolute;
       height: 100vh;
       width: 100vw;
-      z-index: 1;
-    }
-    .zone1 {
       background-color: red;
       top: 50vh;
       left: 50vw;
-    }
-    .zone2 {
-      background-color: yellow;
-      transform: rotate(0.25turn);
-      top: 50vw;
-      left: -50vh;
-    }
-    .zone3 {
-      background-color: green;
-      transform: rotate(0.5turn);
-      top: -50vh;
-      left: -50vw;
-    }
-    .zone4 {
-      background-color: blue;
-      transform: rotate(0.75turn);
-      top: -50vw;
-      left: 50vh;
     }
   </style>
 </head>
 
 <body>
   <div class="zone1">
-    <div class="star"></div>
-  </div>
-  <div class="zone2">
-    <div class="star"></div>
-  </div>
-  <div class="zone3">
-    <div class="star"></div>
-  </div>
-  <div class="zone4">
-    <div class="star"></div>
+    <div class="star" data-deg="30"></div>
+    <div class="star" data-deg="45"></div>
+    <div class="star" data-deg="220"></div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script>
+    var distanceBetweenStart = 10;
     var delta = 0;
+    var farestDistance = 0;
+    var starsCount = 0;
     document.addEventListener('wheel', function (e) {
-      // if (delta + e.deltaY > 0) {
-        delta += e.deltaY;
-      // }
-      console.log(delta);
-      $('.star')
-        .css('top', delta/10 + 'px')
-        .css('left', delta/10 + 'px');
+      delta += e.deltaY;
+      farestDistance = Math.max(farestDistance, delta);
+      if (farestDistance / distanceBetweenStart > starsCount) {
+        starsCount++;
+        $('.zone1').append($('<div>').addClass('star').attr('data-deg', 360 * Math.random()));
+      }
+
+      $('.star').each(function (index, star) {
+        var degree = parseInt($(star).data('deg'));
+        var curve = degree * 2 * Math.PI / 360;
+        $(star)
+          .css('top', delta * Math.sin(curve) + 'px')
+          .css('left', delta * Math.cos(curve) + 'px');
+        });
     });
   </script>
 </body>
