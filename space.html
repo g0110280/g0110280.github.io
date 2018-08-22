@@ -19,41 +19,46 @@
       position: absolute;
       height: 100vh;
       width: 100vw;
-      background-color: red;
-      top: 50vh;
-      left: 50vw;
+      /*background-color: red;*/
+      top: calc(50vh - 10px);
+      left: calc(50vw - 10px);
     }
   </style>
 </head>
 
 <body>
-  <div class="zone1">
-    <div class="star" data-deg="30"></div>
-    <div class="star" data-deg="45"></div>
-    <div class="star" data-deg="220"></div>
-  </div>
+  <div class="zone1"></div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script>
-    var distanceBetweenStart = 10;
-    var delta = 0;
+    var distanceBetweenStart = 20;
+    var scrollPosition = 0;
     var farestDistance = 0;
     var starsCount = 0;
     document.addEventListener('wheel', function (e) {
-      delta += e.deltaY;
-      farestDistance = Math.max(farestDistance, delta);
+      var delta = e.deltaY;
+      scrollPosition += delta;
+      farestDistance = Math.max(farestDistance, scrollPosition);
       if (farestDistance / distanceBetweenStart > starsCount) {
         starsCount++;
-        $('.zone1').append($('<div>').addClass('star').attr('data-deg', 360 * Math.random()));
+        $('.zone1').append(
+          $('<div>')
+            .addClass('star')
+            .attr('data-deg', 360 * Math.random())
+            .attr('data-delta', 0)
+        );
       }
 
       $('.star').each(function (index, star) {
         var degree = parseInt($(star).data('deg'));
         var curve = degree * 2 * Math.PI / 360;
         $(star)
-          .css('top', delta * Math.sin(curve) + 'px')
-          .css('left', delta * Math.cos(curve) + 'px');
-        });
+          .data('delta', $(star).data('delta') + delta)
+          .css('top', ($(star).data('delta')) * Math.sin(curve) + 'px')
+          .css('left', ($(star).data('delta')) * Math.cos(curve) + 'px')
+          .css('display', $(star).data('delta') < 0 ? 'none' : 'static')
+          .css('zoom', $(star).data('delta') / 100);
+      });
     });
   </script>
 </body>
