@@ -6,28 +6,28 @@
       width: 100vw;
       overflow: hidden;
       position: relative;
+      z-index: -999;
     }
     .star {
       position: absolute;
-      background-color: white;
       height: 20px;
       width: 20px;
       border-radius: 10px;
-      display: inline-block;
+      display: none;
     }
-    .zone1 {
+    .radiant {
       position: absolute;
-      height: 100vh;
-      width: 100vw;
-      /*background-color: red;*/
+      height: 10px;
+      width: 10px;
       top: calc(50vh - 10px);
       left: calc(50vw - 10px);
+      z-index: -999;
     }
   </style>
 </head>
 
 <body>
-  <div class="zone1"></div>
+  <div class="radiant"></div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script>
@@ -35,29 +35,75 @@
     var scrollPosition = 0;
     var farestDistance = 0;
     var starsCount = 0;
+    var levelSpacer = 200;
     document.addEventListener('wheel', function (e) {
       var delta = e.deltaY;
+      if (scrollPosition + delta <= 0) {
+        return;
+      }
       scrollPosition += delta;
       farestDistance = Math.max(farestDistance, scrollPosition);
       if (farestDistance / distanceBetweenStart > starsCount) {
         starsCount++;
-        $('.zone1').append(
-          $('<div>')
-            .addClass('star')
-            .attr('data-deg', 360 * Math.random())
-            .attr('data-delta', 0)
-        );
+        console.log('stars: ' + starsCount);
+        $('.radiant')
+          .append(
+            $('<div>')
+              .addClass('star')
+              .attr('data-deg', 360 * Math.random())
+              .attr('data-position', 50)
+              .attr('data-distance', 50)
+              .css('z-index', 0)
+          )
+          .append(
+            $('<div>')
+              .addClass('star')
+              .attr('data-deg', 360 * Math.random())
+              .attr('data-position', levelSpacer)
+              .attr('data-distance', levelSpacer)
+              .css('z-index', -1)
+          )
+          .append(
+            $('<div>')
+              .addClass('star')
+              .attr('data-deg', 360 * Math.random())
+              .attr('data-position', levelSpacer * 2)
+              .attr('data-distance', levelSpacer * 2)
+              .css('z-index', -2)
+          )
+          .append(
+            $('<div>')
+              .addClass('star')
+              .attr('data-deg', 360 * Math.random())
+              .attr('data-position', levelSpacer * 3)
+              .attr('data-distance', levelSpacer * 3)
+              .css('z-index', -3)
+          );
       }
 
       $('.star').each(function (index, star) {
         var degree = parseInt($(star).data('deg'));
         var curve = degree * 2 * Math.PI / 360;
+        var newDistance = $(star).data('distance') + delta;
         $(star)
-          .data('delta', $(star).data('delta') + delta)
-          .css('top', ($(star).data('delta')) * Math.sin(curve) + 'px')
-          .css('left', ($(star).data('delta')) * Math.cos(curve) + 'px')
-          .css('display', $(star).data('delta') < 0 ? 'none' : 'static')
-          .css('zoom', $(star).data('delta') / 100);
+          .data('distance', newDistance)
+          .css('top', newDistance * Math.sin(curve) + 'px')
+          .css('left', newDistance * Math.cos(curve) + 'px')
+          .css('display', newDistance <= $(star).data('position') ? 'none' : 'block')
+          .css('background-color', '#fff')
+          .css('zoom', newDistance / 100);
+
+        if ($(star).data('position') === levelSpacer) {
+          $(star).css('zoom', newDistance / 1000).css('background-color', '#aaa');
+        }
+
+        if ($(star).data('position') === levelSpacer * 2) {
+          $(star).css('zoom', newDistance / 2000).css('background-color', '#555');
+        }
+
+        if ($(star).data('position') === levelSpacer * 3) {
+          $(star).css('zoom', newDistance / 4000).css('background-color', '#222');
+        }
       });
     });
   </script>
