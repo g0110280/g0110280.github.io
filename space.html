@@ -23,11 +23,75 @@
       left: calc(50vw - 10px);
       z-index: -999;
     }
+    .sun, .mercury, .venus, .earth, .mars, .jupiter, .saturn, .uranus, .neptune, .pluto {
+      border-radius: 100%;
+      display: inline-block;
+    }
+    .sun {
+      height: 100px;
+      width: 100px;
+      background-image: radial-gradient(white 10%, yellow 40%, orange 60%, red 80%);
+    }
+    .mercury {
+      height: 100px;
+      width: 100px;
+      background-image: linear-gradient(225deg, #ccc, #222);
+    }
+    .venus {
+      height: 100px;
+      width: 100px;
+      background-image: repeating-linear-gradient(#f6dd00 15%, #dedecc 30%, #f6cc00 45%);
+    }
+    .earth {
+      height: 100px;
+      width: 100px;
+      background-image: linear-gradient(white, blue, green, blue, green, white);
+    }
+    .mars {
+      height: 100px;
+      width: 100px;
+      background-image: linear-gradient(brown, black, brown, brown, black, brown);
+    }
+    .jupiter {
+      height: 100px;
+      width: 100px;
+      background-image: linear-gradient(#b60, #ebb, #840, #a70, #840, #ebb, #a70);
+    }
+    .saturn {
+      height: 100px;
+      width: 100px;
+      background-image: linear-gradient(#777, #dc9, #974, #754, #777);
+    }
+    .uranus {
+      height: 100px;
+      width: 100px;
+      background-image: linear-gradient(225deg, #aef, #222);
+    }
+    .neptune {
+      height: 100px;
+      width: 100px;
+      background-image: linear-gradient(#08c, #047 20%, #08c 70%, #047, #08c);
+    }
+    .pluto {
+      height: 100px;
+      width: 100px;
+      background-image: linear-gradient(210deg, #eb8, #eb8, #999, #422, #422);
+    }
   </style>
 </head>
 
 <body>
   <div class="radiant"></div>
+  <div class="sun"></div>
+  <div class="mercury"></div>
+  <div class="venus"></div>
+  <div class="earth"></div>
+  <div class="mars"></div>
+  <div class="jupiter"></div>
+  <div class="saturn"></div>
+  <div class="uranus"></div>
+  <div class="neptune"></div>
+  <div class="pluto"></div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script>
