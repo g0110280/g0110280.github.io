@@ -77,11 +77,44 @@
       width: 100px;
       background-image: linear-gradient(210deg, #eb8, #eb8, #999, #422, #422);
     }
+    .jet {
+      display: inline-block;
+      content: '';
+      width: 0px;
+      height: 0px;
+      border-bottom: 90px solid white;
+      border-right: 40px solid transparent;
+      border-left: 40px solid transparent;
+      box-shadow:
+        -15px 45px 0 -30px #bbb,
+        15px 45px 0 -30px #bbb,
+        0 15px white,
+        -15px 80px 0 -30px orange,
+        15px 80px 0 -30px orange;
+      border-radius: 100px 100px 0 0;
+      position: absolute;
+      left: -40px;
+      top: 20vh;
+      z-index: 10;
+    }
+    .jet:before {
+      content: '';
+      width: 0;
+      height: 0;
+      display: block;
+      margin-top: 30px;
+      margin-left: -15px;
+      border-bottom: 30px solid black;
+      border-right: 15px solid transparent;
+      border-left: 15px solid transparent;
+    }
   </style>
 </head>
 
 <body>
-  <div class="radiant"></div>
+  <div class="radiant">
+    <div class="jet"></div>
+  </div>
   <div class="sun"></div>
   <div class="mercury"></div>
   <div class="venus"></div>
