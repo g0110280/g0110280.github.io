@@ -22,7 +22,8 @@
 
     .hexagon {
       display: inline-block;
-      margin: 0 2px;
+      margin: 2px;
+      position: absolute;
     }
 
     .row {
@@ -34,6 +35,7 @@
       width: 100vw;
       height: 100vh;
       overflow: hidden;
+      position: relative;
     }
   </style>
 </head>
@@ -57,14 +59,34 @@
 
     for (var j = 0; j <= yAxisLength; j++) {
       for (var i = 0; i <= xAxisLength; i++) {
-        $('[data-layer=0]').append(template.clone().attr('data-number', i));
+        $('body').append(template.clone().attr('data-x', i).attr('data-y', j));
+        $('body').append(template.clone().attr('data-x', -i).attr('data-y', j));
 
       }
-      console.log($('#hexagon').width())
-      console.log($('#hexagon').outerWidth(true))
-      var shiftDistance = parseInt(xAxisLength / 2) * $('#hexagon').outerWidth(true);
-      console.log(shiftDistance);
-      $('[data-layer=0]').css('transform', 'translateX(-'+shiftDistance+'px)')
+      for (var i = 0; i <= xAxisLength; i++) {
+        $('body').append(template.clone().attr('data-x', i).attr('data-y', -j));
+        $('body').append(template.clone().attr('data-x', -i).attr('data-y', -j));
+
+      }
+      // console.log($('#hexagon').width())
+      // console.log($('#hexagon').outerWidth(true))
+      // var shiftDistance = parseInt(xAxisLength / 2) * $('#hexagon').outerWidth(true);
+      // console.log(shiftDistance);
+      // $('[data-layer=0]').css('transform', 'translateX(-'+shiftDistance+'px)')
     }
+
+    $('.hexagon').each(function (index, hexagon) {
+      var xShiftDistance = $(hexagon).outerWidth(true) * $(hexagon).data('x');
+      var yShiftDistance = $(hexagon).outerHeight(true) * $(hexagon).data('y');
+      if ($(hexagon).data('y') % 2) {
+        xShiftDistance += $(hexagon).outerWidth(true) / 2
+      }
+      if ($(hexagon).data('y') !== '0') {
+        yShiftDistance -= ($(hexagon).outerHeight(true) / 4 * $(hexagon).data('y'))
+      }
+      $(hexagon)
+        .css('top', yShiftDistance)
+        .css('left', xShiftDistance);
+    });
   </script>
 </body>
