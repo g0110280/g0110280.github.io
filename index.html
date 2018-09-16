@@ -1,38 +1,56 @@
 <head>
   <style>
-    .hexagon-middle {
-      height: 60px;
-      width: 104px;
-      background-color: black;
-    }
-
-    .hexagon-top {
-      width: 0;
-      border-bottom: 30px solid black;
-      border-left: 52px solid transparent;
-      border-right: 52px solid transparent;
-    }
-
-    .hexagon-bottom {
-      width: 0;
-      border-top: 30px solid black;
-      border-left: 52px solid transparent;
-      border-right: 52px solid transparent;
-    }
-
     .hexagon {
       display: inline-block;
-      margin: 2px;
+      margin: 3px;
       position: absolute;
       z-index: 3;
+      background-color: black;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0 25%);
+      width: calc(104px * 1.2);
+      height: calc(120px * 1.2);
     }
 
-    .row {
-      white-space: nowrap;
+    @keyframes glowing {
+      0%   {
+        /*box-shadow: */
+      }
+      100% {
+        /*box-shadow: */
+      }
+    }
+
+    .hexagon#center {
+      background-color: white;
+      cursor: pointer;
+      z-index: 5;
+    }
+
+    .hexagon#center:after {
+      z-index: 4;
+      /*top: 0;*/
+      /*left: 0;*/
+      /*position: relative;*/
+      content: '';
+      display: inline-block;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0 25%);
+      width: calc(104px * 1.2);
+      height: calc(120px * 1.2);
+      background-color: cyan;
+      /*transform: translateX(-50%) translateY(-50%);*/
+      /*animation-name: expand;*/
+      animation-duration: 5s;
+      /*animation-iteration-count: infinite;*/
+      /*animation-timing-function: ease-in-out;*/
+    }
+
+    .hexagon#center.fade-out {
+      background-color: black;
+      transition: background-color 1s;
     }
 
     body {
-      transform: translateX(calc(50vw - 52px - 10px)) translateY(calc(50vh - 60px - 10px));
+      transform: translateX(50vw) translateY(50vh);
       width: 100vw;
       height: 100vh;
       overflow: hidden;
@@ -42,59 +60,48 @@
 
     @keyframes expand {
       0%   {
-        width: 1px;
-        height: 1px;
+        width: 104px;
+        height: 120px;
       }
       100% {
-        width: 150vmax;
-        height: 150vmax;
+        width: 2080px;
+        height: 2400px;
       }
     }
 
-    .circle:before {
+    .animator {
+      z-index: 1;
+    }
+
+    .animator:before, .animator:after {
       top: 0;
       left: 0;
       position: absolute;
       content: '';
       display: inline-block;
-      width: 0;
-      height: 0;
-      border-radius: 100%;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0 25%);
+      width: calc(104px * .9);
+      height: calc(120px * .9);
       background-color: cyan;
       transform: translateX(-50%) translateY(-50%);
       animation-name: expand;
-      animation-duration: 4s;
-      animation-iteration-count: infinite;
-      animation-timing-function: ease-in-out;
+      animation-duration: 5s;
+      /*animation-iteration-count: infinite;*/
+      /*animation-timing-function: ease-in-out;*/
+    }
+    .animator:before {
+      background-color: cyan;
     }
 
-    .circle:after {
-      top: 0;
-      left: 0;
-      position: absolute;
-      content: '';
-      display: inline-block;
-      width: 0;
-      height: 0;
-      border-radius: 100%;
+    .animator:after {
       background-color: black;
-      transform: translateX(-50%) translateY(-50%);
-      animation-delay: .2s;
-      animation-name: expand;
-      animation-duration: 4s;
-      animation-iteration-count: infinite;
-      animation-timing-function: ease-in-out;
+      animation-delay: .15s;
     }
   </style>
 </head>
 
 <body>
-  <!-- <div class="circle"></div> -->
-  <div class="hexagon" id="hexagon" style="display: none;">
-    <div class="hexagon-top"></div>
-    <div class="hexagon-middle"></div>
-    <div class="hexagon-bottom"></div>
-  </div>
+  <div class="hexagon" id="hexagon" style="display: none;"></div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script>
@@ -103,22 +110,38 @@
     var xAxisLength = Math.ceil($(window).width() / $('#hexagon').width()) + 1;
     var yAxisLength = Math.ceil($(window).height() / 2 / $('#hexagon').height() * 2);
 
+    $('body').append(
+      template.clone()
+        .attr('data-x', 0)
+        .attr('data-y', 0)
+        .attr('id', 'center')
+        .click(function (e) {
+          $('body').append($('<div>').addClass('animator'));
+          $(e.target).addClass('fade-out');
+        })
+    );
+
     for (var j = 0; j <= yAxisLength; j++) {
       for (var i = 0; i <= xAxisLength; i++) {
+        if (i === 0 && j === 0) {
+          continue;
+        }
         $('body').append(template.clone().attr('data-x', i).attr('data-y', j));
         $('body').append(template.clone().attr('data-x', -i).attr('data-y', j));
 
       }
       for (var i = 0; i <= xAxisLength; i++) {
+        if (i === 0 && j === 0) {
+          continue;
+        }
         $('body').append(template.clone().attr('data-x', i).attr('data-y', -j));
         $('body').append(template.clone().attr('data-x', -i).attr('data-y', -j));
-
       }
     }
 
     $('.hexagon').each(function (index, hexagon) {
-      var xShiftDistance = $(hexagon).outerWidth(true) * $(hexagon).data('x');
-      var yShiftDistance = $(hexagon).outerHeight(true) * $(hexagon).data('y');
+      var xShiftDistance = $(hexagon).outerWidth(true) * $(hexagon).data('x') - $(hexagon).outerWidth(true) / 2;
+      var yShiftDistance = $(hexagon).outerHeight(true) * $(hexagon).data('y') - $(hexagon).outerHeight(true) / 2;
       if ($(hexagon).data('y') % 2) {
         xShiftDistance += $(hexagon).outerWidth(true) / 2
       }
@@ -129,9 +152,5 @@
         .css('top', yShiftDistance)
         .css('left', xShiftDistance);
     });
-
-    $('body').append($('<div>').addClass('circle').css('z-index', '1'))
-
-
   </script>
 </body>
