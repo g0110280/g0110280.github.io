@@ -24,6 +24,7 @@
       display: inline-block;
       margin: 2px;
       position: absolute;
+      z-index: 3;
     }
 
     .row {
@@ -31,22 +32,68 @@
     }
 
     body {
-      transform: translateX(calc(50vw - 52px - 10px)) translateY(calc(50vh - 60px));
+      transform: translateX(calc(50vw - 52px - 10px)) translateY(calc(50vh - 60px - 10px));
       width: 100vw;
       height: 100vh;
       overflow: hidden;
       position: relative;
+      background-color: black;
+    }
+
+    @keyframes expand {
+      0%   {
+        width: 1px;
+        height: 1px;
+      }
+      100% {
+        width: 150vmax;
+        height: 150vmax;
+      }
+    }
+
+    .circle:before {
+      top: 0;
+      left: 0;
+      position: absolute;
+      content: '';
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-radius: 100%;
+      background-color: cyan;
+      transform: translateX(-50%) translateY(-50%);
+      animation-name: expand;
+      animation-duration: 4s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+    }
+
+    .circle:after {
+      top: 0;
+      left: 0;
+      position: absolute;
+      content: '';
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-radius: 100%;
+      background-color: black;
+      transform: translateX(-50%) translateY(-50%);
+      animation-delay: .2s;
+      animation-name: expand;
+      animation-duration: 4s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
     }
   </style>
 </head>
 
 <body>
-  <div class="row" data-layer="0">
-    <div class="hexagon" id="hexagon" style="display: none;">
-      <div class="hexagon-top"></div>
-      <div class="hexagon-middle"></div>
-      <div class="hexagon-bottom"></div>
-    </div>
+  <!-- <div class="circle"></div> -->
+  <div class="hexagon" id="hexagon" style="display: none;">
+    <div class="hexagon-top"></div>
+    <div class="hexagon-middle"></div>
+    <div class="hexagon-bottom"></div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -55,7 +102,6 @@
 
     var xAxisLength = Math.ceil($(window).width() / $('#hexagon').width()) + 1;
     var yAxisLength = Math.ceil($(window).height() / 2 / $('#hexagon').height() * 2);
-    console.log(xAxisLength, yAxisLength)
 
     for (var j = 0; j <= yAxisLength; j++) {
       for (var i = 0; i <= xAxisLength; i++) {
@@ -68,11 +114,6 @@
         $('body').append(template.clone().attr('data-x', -i).attr('data-y', -j));
 
       }
-      // console.log($('#hexagon').width())
-      // console.log($('#hexagon').outerWidth(true))
-      // var shiftDistance = parseInt(xAxisLength / 2) * $('#hexagon').outerWidth(true);
-      // console.log(shiftDistance);
-      // $('[data-layer=0]').css('transform', 'translateX(-'+shiftDistance+'px)')
     }
 
     $('.hexagon').each(function (index, hexagon) {
@@ -88,5 +129,9 @@
         .css('top', yShiftDistance)
         .css('left', xShiftDistance);
     });
+
+    $('body').append($('<div>').addClass('circle').css('z-index', '1'))
+
+
   </script>
 </body>
