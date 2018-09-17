@@ -26,7 +26,7 @@
       z-index: 5;
     }
 
-    .hexagon#center:after {
+    .hexagon#center {
       z-index: 4;
       /*top: 0;*/
       /*left: 0;*/
@@ -97,6 +97,39 @@
       background-color: black;
       animation-delay: .15s;
     }
+
+    @keyframes expand-fade {
+      0%   {
+        width: 100px;
+        height: 100px;
+      }
+      100% {
+        width: 2500px;
+        height: 2500px;
+      }
+    }
+
+    .animator-fade {
+      z-index: 1;
+    }
+
+    .animator-fade:before {
+      top: 0;
+      left: 0;
+      position: absolute;
+      content: '';
+      display: inline-block;
+      width: 104px;
+      height: 120px;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0 25%);
+      background: radial-gradient(black 50%, cyan 70%, black);
+      transform: translateX(-50%) translateY(-50%);
+      animation-name: expand-fade;
+      animation-duration: 4s;
+      /*animation-iteration-count: infinite;*/
+      /*animation-timing-function: ease-in-out;*/
+      /*border-radius: 100%;*/
+    }
   </style>
 </head>
 
@@ -116,7 +149,7 @@
         .attr('data-y', 0)
         .attr('id', 'center')
         .click(function (e) {
-          $('body').append($('<div>').addClass('animator'));
+          $('body').append($('<div>').addClass('animator-fade'));
           $(e.target).addClass('fade-out');
         })
     );
