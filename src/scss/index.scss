@@ -1,0 +1,225 @@
+.hexagon {
+  display: inline-block;
+  margin: 3px;
+  position: absolute;
+  z-index: 3;
+  background-color: black;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0 25%);
+  width: calc(104px * 1.2);
+  height: calc(120px * 1.2);
+}
+
+@keyframes glowing {
+  0%   {
+    opacity: 0;
+  }
+  50%  {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.hexagon#center {
+  cursor: pointer;
+  z-index: 4;
+  content: '';
+  display: inline-block;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0 25%);
+  width: calc(104px * 1.2);
+  height: calc(120px * 1.2);
+  background-color: cyan;
+}
+
+.glowing {
+  animation-name: glowing;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+}
+
+.hexagon#center.fade-out {
+  background-color: black;
+  transition: background-color 1s;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: black;
+  color: cyan;
+}
+
+#hexagons_wrapper {
+  width: 100%;
+  height: 100%;
+  transform: translateX(50vw) translateY(50vh);
+  position: relative;
+}
+
+@keyframes expand {
+  0%   {
+    width: 104px;
+    height: 120px;
+  }
+  100% {
+    width: 2080px;
+    height: 2400px;
+  }
+}
+
+.animator {
+  z-index: 1;
+}
+
+.animator:before, .animator:after {
+  top: 0;
+  left: 0;
+  position: absolute;
+  content: '';
+  display: inline-block;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0 25%);
+  width: calc(104px * .9);
+  height: calc(120px * .9);
+  background-color: cyan;
+  transform: translateX(-50%) translateY(-50%);
+  animation-name: expand;
+  animation-duration: 5s;
+  /*animation-iteration-count: infinite;*/
+  /*animation-timing-function: ease-in-out;*/
+}
+.animator:before {
+  background-color: cyan;
+}
+
+.animator:after {
+  background-color: black;
+  animation-delay: .15s;
+}
+
+@keyframes expand-fade {
+  0%   {
+    width: 100px;
+    height: 100px;
+  }
+  100% {
+    width: 2500px;
+    height: 2500px;
+  }
+}
+
+.animator-fade {
+  z-index: 1;
+}
+
+.animator-fade:before {
+  top: 0;
+  left: 0;
+  position: absolute;
+  content: '';
+  display: inline-block;
+  width: 104px;
+  height: 120px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0 25%);
+  background: radial-gradient(black 50%, cyan 70%, black);
+  transform: translateX(-50%) translateY(-50%);
+  animation-name: expand-fade;
+  animation-duration: 4s;
+  /*animation-iteration-count: infinite;*/
+  /*animation-timing-function: ease-in-out;*/
+  /*border-radius: 100%;*/
+}
+.text-center {
+  text-align: center;
+}
+
+#content_wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+@keyframes typing {
+  0%   {
+    width: 0;
+    color: cyan;
+  }
+  100% {
+    width: 100%;
+    color: cyan;
+  }
+}
+.typing {
+  width: 10px;
+  color: transparent;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  animation-name: typing;
+  animation-duration: .5s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  position: relative;
+}
+.typing:after {
+  position: absolute;
+  right: 0;
+  margin-left: 20px;
+  content: '';
+  display: inline-block;
+  background-color: cyan;
+  width: 10px;
+  height: 100%;
+  animation-name: glowing;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-iteration-count: 4;
+  animation-fill-mode: forwards;
+}
+h1 {
+  height: 40px;
+  animation-delay: 2s;
+  margin: 0;
+}
+h2 {
+  /*opacity: 0;*/
+  animation-delay: 4s;
+}
+.typing_wrapper {
+  display: inline-block;
+  position: relative;
+  white-space: nowrap;
+  text-align: center;
+}
+.typing_wrapper > * {
+  width: 10px;
+  color: transparent;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  animation-name: typing;
+  animation-duration: .5s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  position: relative;
+}
+.typing_wrapper:after {
+  /*position: absolute;
+  top: 0;
+  right: 0;*/
+  /*margin-left: 20px;*/
+  content: '';
+  display: inline-block;
+  background-color: cyan;
+  width: 10px;
+  height: 30px;
+  animation-name: glowing;
+  animation-duration: 1s;
+  /*animation-iteration-count: infinite;*/
+  animation-iteration-count: 4;
+  animation-fill-mode: forwards;
+}
