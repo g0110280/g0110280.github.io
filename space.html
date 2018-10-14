@@ -8,6 +8,21 @@
       position: relative;
       z-index: -999;
     }
+    .camera {
+      perspective-origin:center center;
+      -moz-perspective-origin:center center;
+      -webkit-perspective-origin:center center;
+      perspective:500px;
+      -moz-perspective:500px;
+      -webkit-perspective:500px;
+    }
+    .space {
+      width:100%;
+      height:100%;
+      transform-style: preserve-3d;
+      -moz-transform-style:preserve-3d;
+      -webkit-transform-style:preserve-3d;
+    }
     .star {
       position: absolute;
       height: 20px;
@@ -16,6 +31,7 @@
       display: none;
     }
     .radiant {
+      transform: translateZ(150px);
       position: absolute;
       height: 10px;
       width: 10px;
@@ -23,60 +39,22 @@
       left: calc(50vw - 10px);
       z-index: -999;
     }
-    .sun, .mercury, .venus, .earth, .mars, .jupiter, .saturn, .uranus, .neptune, .pluto {
+    .solar-system > * {
       border-radius: 100%;
       display: inline-block;
-    }
-    .sun {
       height: 100px;
       width: 100px;
-      background-image: radial-gradient(white 10%, yellow 40%, orange 60%, red 80%);
     }
-    .mercury {
-      height: 100px;
-      width: 100px;
-      background-image: linear-gradient(225deg, #ccc, #222);
-    }
-    .venus {
-      height: 100px;
-      width: 100px;
-      background-image: repeating-linear-gradient(#f6dd00 15%, #dedecc 30%, #f6cc00 45%);
-    }
-    .earth {
-      height: 100px;
-      width: 100px;
-      background-image: linear-gradient(white, blue, green, blue, green, white);
-    }
-    .mars {
-      height: 100px;
-      width: 100px;
-      background-image: linear-gradient(brown, black, brown, brown, black, brown);
-    }
-    .jupiter {
-      height: 100px;
-      width: 100px;
-      background-image: linear-gradient(#b60, #ebb, #840, #a70, #840, #ebb, #a70);
-    }
-    .saturn {
-      height: 100px;
-      width: 100px;
-      background-image: linear-gradient(#777, #dc9, #974, #754, #777);
-    }
-    .uranus {
-      height: 100px;
-      width: 100px;
-      background-image: linear-gradient(225deg, #aef, #222);
-    }
-    .neptune {
-      height: 100px;
-      width: 100px;
-      background-image: linear-gradient(#08c, #047 20%, #08c 70%, #047, #08c);
-    }
-    .pluto {
-      height: 100px;
-      width: 100px;
-      background-image: linear-gradient(210deg, #eb8, #eb8, #999, #422, #422);
-    }
+    .sun     { background-image: radial-gradient(white 10%, yellow 40%, orange 60%, red 80%); }
+    .mercury { background-image: linear-gradient(225deg, #ccc, #222); }
+    .venus   { background-image: repeating-linear-gradient(#f6dd00 15%, #dedecc 30%, #f6cc00 45%); }
+    .earth   { background-image: linear-gradient(white, blue, green, blue, green, white); }
+    .mars    { background-image: linear-gradient(brown, black, brown, brown, black, brown); }
+    .jupiter { background-image: linear-gradient(#b60, #ebb, #840, #a70, #840, #ebb, #a70); }
+    .saturn  { background-image: linear-gradient(#777, #dc9, #974, #754, #777); }
+    .uranus  { background-image: linear-gradient(225deg, #aef, #222); }
+    .neptune { background-image: linear-gradient(#08c, #047 20%, #08c 70%, #047, #08c); }
+    .pluto   { background-image: linear-gradient(210deg, #eb8, #eb8, #999, #422, #422); }
 
     @keyframes flame {
       0%   {
@@ -84,8 +62,8 @@
           -15px 45px 0 -30px #bbb,
           15px 45px 0 -30px #bbb,
           0 15px white,
-          -15px 70px 0 -38px red,
-          15px 70px 0 -38px red;
+          -15px 70px 0 -40px red,
+          15px 70px 0 -40px red;
       }
       10%   {
         box-shadow:
@@ -116,8 +94,8 @@
           -15px 45px 0 -30px #bbb,
           15px 45px 0 -30px #bbb,
           0 15px white,
-          -15px 70px 0 -38px red,
-          15px 70px 0 -38px red;
+          -15px 70px 0 -40px red,
+          15px 70px 0 -40px red;
       }
     }
     .jet {
@@ -134,7 +112,7 @@
       top: 20vh;
       z-index: 10;
       animation-name: flame;
-      animation-duration: .5s;
+      animation-duration: .6s;
       animation-iteration-count: infinite;
       animation-timing-function: ease-in-out;
     }
@@ -153,19 +131,26 @@
 </head>
 
 <body>
-  <div class="radiant">
-    <div class="jet"></div>
+  <div class="camera">
+    <div class="space">
+      <div class="radiant">
+        <div class="jet"></div>
+        <div class="solar-system">
+          <div class="sun"></div>
+          <div class="mercury"></div>
+          <div class="venus"></div>
+          <div class="earth"></div>
+          <div class="mars"></div>
+          <div class="jupiter"></div>
+          <div class="saturn"></div>
+          <div class="uranus"></div>
+          <div class="neptune"></div>
+          <div class="pluto"></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="sun"></div>
-  <div class="mercury"></div>
-  <div class="venus"></div>
-  <div class="earth"></div>
-  <div class="mars"></div>
-  <div class="jupiter"></div>
-  <div class="saturn"></div>
-  <div class="uranus"></div>
-  <div class="neptune"></div>
-  <div class="pluto"></div>
+
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script>
