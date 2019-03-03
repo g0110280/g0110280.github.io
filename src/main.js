@@ -1,1 +1,1 @@
-const SCSS_STYLE = require('./scss/index.scss')
+// const SCSS_STYLE = require('./scss/index.scss')

@@ -1,4 +1,11 @@
-style.
+head
+  link(href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet")
+
+style(lang="scss").
+  * {
+    font-family: 'Open Sans', sans-serif;
+  }
+
   .hexagon {
     display: inline-block;
     margin: 3px;
@@ -186,6 +193,7 @@ style.
     animation-delay: 2s;
     margin: 0;
   }
+
   h2 {
     /*opacity: 0;*/
     animation-delay: 4s;
@@ -195,6 +203,7 @@ style.
     position: relative;
     white-space: nowrap;
     text-align: center;
+    transition: all 1s;
   }
   .typing_wrapper > * {
     width: 10px;
@@ -203,7 +212,7 @@ style.
     white-space: nowrap;
     display: inline-block;
     animation-name: typing;
-    animation-duration: .5s;
+    animation-duration: 1s;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
     position: relative;
@@ -224,69 +233,130 @@ style.
     animation-iteration-count: 4;
     animation-fill-mode: forwards;
   }
+  .typing_wrapper.shifted {
+    margin-bottom: 30px;
+  }
+
+  ul#navbar {
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+    margin: 30px auto 0;
+    list-style: none;
+    padding: 0;
+    position: absolute;
+    top: 50vh;
+    opacity: 0;
+    transition: all 1s;
+  }
+
+  ul#navbar.show {
+    top: calc(50vh + 40px);
+    opacity: 1;
+  }
+
+  ul#navbar li a {
+    font-size: 24px;
+    font-weight: 300;
+    color: white;
+    text-decoration: none;
+  }
+
+  .hide {
+    display: none !important;
+  }
 
 body
   #hexagons_wrapper
-    #hexagon.hexagon
+    #hexagon.hexagon.hide
 
-  #content_wrapper
+  #content_wrapper.hide
     .typing_wrapper
-      h1 I'm Stream.
-    //- h1.text-center.typing I'm Stream.
-    //- h2.typing Wellcome to my website!
-    ul#categories
-      li Works
-      li Blogs
-      li Contact me
+      h1 I'm Stream, welcome!
+    ul#navbar.hide
+      li: a(href="#") Works
+      li: a(href="#") Blogs
+      li: a(href="#") Github
 
-script.
-  var template = $('#hexagon').clone().removeAttr('id').removeAttr('style');
+  script(src="https://code.jquery.com/jquery-3.3.1.min.js")
+  script.
+    $(document).ready(function () {
+      animateHexagons(function () {
+        showMainContent(function () {
+          $('h1').closest('.typing_wrapper').addClass('shifted');
+          $('ul#navbar').removeClass('hide');
+          setTimeout(function () {
+            $('ul#navbar').addClass('show');
+          }, 10);
+        });
+      });
+    });
 
-  var xAxisLength = Math.ceil($(window).width() / template.width()) + 1;
-  var yAxisLength = Math.ceil($(window).height() / 2 / template.height() * 2);
+    function showMainContent(callback) {
+      $('#content_wrapper').removeClass('hide');
+      setTimeout(function () {
+        callback();
+      }, 5000);
+    }
 
-  console.log(template.outerHeight())
-  //- console.log(xAxisLength, yAxisLength)
+    function animateHexagons(callback) {
+      var template = $('#hexagon').clone().removeAttr('id').removeClass('hide');
 
-  //- $('#hexagons_wrapper').append(
-  //-   template.clone()
-  //-     .attr('data-x', 0)
-  //-     .attr('data-y', 0)
-  //-     .attr('id', 'center')
-  //-     .addClass('glowing')
-  //-     .click(function (e) {
-  //-       $('#hexagons_wrapper').append($('<div>').addClass('animator-fade'));
-  //-       $(e.target).addClass('fade-out').removeClass('glowing');
-  //-     })
-  //- );
+      var width = $('#hexagon').width() || (104 * 1.2);
+      var height = $('#hexagon').height() || (120 * 1.2);
 
-  //- for (var j = 0; j <= yAxisLength; j++) {
-  //-   for (var i = 0; i <= xAxisLength; i++) {
-  //-     if (i === 0 && j === 0) {
-  //-       continue;
-  //-     }
-  //-     $('#hexagons_wrapper').append(template.clone().attr('data-x', i).attr('data-y', j));
-  //-     $('#hexagons_wrapper').append(template.clone().attr('data-x', -i).attr('data-y', j));
-  //-   }
-  //-   for (var i = 0; i <= xAxisLength; i++) {
-  //-     if (i === 0 && j === 0) {
-  //-       continue;
-  //-     }
-  //-     $('#hexagons_wrapper').append(template.clone().attr('data-x', i).attr('data-y', -j));
-  //-     $('#hexagons_wrapper').append(template.clone().attr('data-x', -i).attr('data-y', -j));
-  //-   }
-  //- }
+      // calculate needed hexagons count in both axis
+      var xAxisLength = Math.ceil($(window).width() / width) + 1;
+      var yAxisLength = Math.ceil($(window).height() / 2 / height * 2);
 
-  //- $('.hexagon').each(function (index, hexagon) {
-  //-   var xShiftDistance = $(hexagon).outerWidth(true) * $(hexagon).data('x') - $(hexagon).outerWidth(true) / 2;
-  //-   var yShiftDistance = $(hexagon).outerHeight(true) * $(hexagon).data('y') - $(hexagon).outerHeight(true) / 2;
-  //-   if ($(hexagon).data('y') % 2) {
-  //-     xShiftDistance += $(hexagon).outerWidth(true) / 2
-  //-   }
-  //-   if ($(hexagon).data('y') !== '0') {
-  //-     yShiftDistance -= ($(hexagon).outerHeight(true) / 4 * $(hexagon).data('y'))
-  //-   }
-  //-   $(hexagon)
-  //-     .css('top', yShiftDistance)
-  //-     .css('left', xShiftDistance);
-  //- });
+      // render the centered one
+      $('#hexagons_wrapper').append(
+        template.clone()
+          .attr('data-x', 0)
+          .attr('data-y', 0)
+          .attr('id', 'center')
+          .addClass('glowing')
+          .click(function (e) {
+            $('#hexagons_wrapper').append($('<div>').addClass('animator-fade'));
+            $(e.target).addClass('fade-out').removeClass('glowing');
+
+            setTimeout(function () {
+              $('#hexagons_wrapper').addClass('hide');
+              callback();
+            }, 2000);
+          })
+      );
+
+      // render the rest hexagons
+      for (var j = 0; j <= yAxisLength; j++) {
+        for (var i = 0; i <= xAxisLength; i++) {
+          if (i === 0 && j === 0) {
+            continue;
+          }
+          $('#hexagons_wrapper').append(template.clone().attr('data-x', i).attr('data-y', j));
+          $('#hexagons_wrapper').append(template.clone().attr('data-x', -i).attr('data-y', j));
+        }
+        for (var i = 0; i <= xAxisLength; i++) {
+          if (i === 0 && j === 0) {
+            continue;
+          }
+          $('#hexagons_wrapper').append(template.clone().attr('data-x', i).attr('data-y', -j));
+          $('#hexagons_wrapper').append(template.clone().attr('data-x', -i).attr('data-y', -j));
+        }
+      }
+
+      // set position for all hexagons
+      $('.hexagon').each(function (index, hexagon) {
+        var xShiftDistance = $(hexagon).outerWidth(true) * $(hexagon).data('x') - $(hexagon).outerWidth(true) / 2;
+        var yShiftDistance = $(hexagon).outerHeight(true) * $(hexagon).data('y') - $(hexagon).outerHeight(true) / 2;
+        if ($(hexagon).data('y') % 2) {
+          xShiftDistance += $(hexagon).outerWidth(true) / 2
+        }
+        if ($(hexagon).data('y') !== '0') {
+          yShiftDistance -= ($(hexagon).outerHeight(true) / 4 * $(hexagon).data('y'))
+        }
+        $(hexagon)
+          .css('top', yShiftDistance)
+          .css('left', xShiftDistance);
+      });
+    }
