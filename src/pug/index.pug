@@ -38,6 +38,7 @@ style(lang="scss").
     width: calc(104px * 1.2);
     height: calc(120px * 1.2);
     background-color: cyan;
+    transition: all 1s;
   }
 
   .glowing {
@@ -49,7 +50,6 @@ style(lang="scss").
 
   .hexagon#center.fade-out {
     background-color: black;
-    transition: background-color 1s;
   }
 
   body {
@@ -281,14 +281,16 @@ body
   script(src="https://code.jquery.com/jquery-3.3.1.min.js")
   script.
     $(document).ready(function () {
-      animateHexagons(function () {
-        showMainContent(function () {
-          $('h1').closest('.typing_wrapper').addClass('shifted');
-          $('ul#navbar').removeClass('hide');
-          setTimeout(function () {
-            $('ul#navbar').addClass('show');
-          }, 10);
-        });
+      renderHexagons(function () {
+        animateHive(function () {
+          showMainContent(function () {
+            $('h1').closest('.typing_wrapper').addClass('shifted');
+            $('ul#navbar').removeClass('hide');
+            setTimeout(function () {
+              $('ul#navbar').addClass('show');
+            }, 10);
+          });
+        })
       });
     });
 
@@ -299,7 +301,17 @@ body
       }, 5000);
     }
 
-    function animateHexagons(callback) {
+    function animateHive(callback) {
+      $('#hexagons_wrapper').append($('<div>').addClass('animator-fade'));
+      $('.hexagon#center').addClass('fade-out').removeClass('glowing');
+
+      setTimeout(function () {
+        $('#hexagons_wrapper').addClass('hide');
+        callback();
+      }, 2000);
+    }
+
+    function renderHexagons(callback) {
       var template = $('#hexagon').clone().removeAttr('id').removeClass('hide');
 
       var width = $('#hexagon').width() || (104 * 1.2);
@@ -316,15 +328,7 @@ body
           .attr('data-y', 0)
           .attr('id', 'center')
           .addClass('glowing')
-          .click(function (e) {
-            $('#hexagons_wrapper').append($('<div>').addClass('animator-fade'));
-            $(e.target).addClass('fade-out').removeClass('glowing');
-
-            setTimeout(function () {
-              $('#hexagons_wrapper').addClass('hide');
-              callback();
-            }, 2000);
-          })
+          .click(callback)
       );
 
       // render the rest hexagons
