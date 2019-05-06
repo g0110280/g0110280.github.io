@@ -1,9 +1,10 @@
 <template lang="pug">
   #content_wrapper(:class="{ hide: !showWelcome }")
-    .typing_wrapper
+    img#logo(src="@/assets/logo.png", :class="{ show: welcomeFinished }")
+    #welcome.typing_wrapper(:class="{ show: !welcomeFinished }")
       h1 I'm Stream, welcome!
-    ul#navbar(:class="{ show: showNav }")
-      li: a(href="#") Works
+    ul#navbar(:class="{ show: welcomeFinished }")
+      li: a(href="#") Gallery
       li: a(href="#") Blogs
       li: a(href="#") Github
 </template>
@@ -13,18 +14,18 @@
     data () {
       return {
         showWelcome: false,
-        showNav: false
+        welcomeFinished: false
       }
     },
     mounted () {
-      //
+      // this.play()
     },
     methods: {
       play () {
         this.showWelcome = true
 
         setTimeout(() => {
-          this.showNav = true
+          this.welcomeFinished = true
         }, 5000)
       }
     }
@@ -143,7 +144,7 @@
       animation-name: glowing;
       animation-duration: 1s;
       /*animation-iteration-count: infinite;*/
-      animation-iteration-count: 4;
+      animation-iteration-count: 5;
       animation-fill-mode: forwards;
     }
   }
@@ -151,11 +152,11 @@
   ul#navbar {
     display: flex;
     justify-content: space-between;
-    width: 400px;
     list-style: none;
     padding: 0;
     opacity: 0;
     transition: all 1s;
+    transition-delay: .7s;
     margin-top: -50px;
 
     &.show {
@@ -163,11 +164,112 @@
       opacity: 1;
     }
 
-    li a {
-      font-size: 24px;
-      font-weight: 300;
-      color: white;
-      text-decoration: none;
+    li {
+      position: relative;
+
+      + * {
+        margin-left: 80px;
+      }
+
+      &:before, &:after {
+        color: $primary;
+        opacity: 0;
+        padding: 0 20px;
+        transition: all .3s;
+        font-size: 30px;
+        display: inline-block;
+      }
+
+      &:before {
+        content: '{';
+        transform: translateX(20px);
+      }
+
+      &:after {
+        content: '}';
+        transform: translateX(-20px);
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        &:before, &:after {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes expand-underline {
+        0% {
+          width: 0;
+        }
+
+        100% {
+          width: 100%;
+        }
+      }
+
+      a {
+        font-size: 24px;
+        font-weight: 300;
+        color: white;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        display: inline-block;
+
+        &:after {
+          content: '';
+          display: block;
+          margin: 10px auto;
+          width: 0;
+          height: 2px;
+          background: white;
+          transition: all .3s;
+        }
+      }
+
+      &:hover {
+        a {
+          &:before, &:after {
+            background: $bg-color;
+          }
+        }
+      }
+    }
+
+    &.show {
+      a {
+        &:before, &:after {
+          animation-name: expand-underline;
+          animation-duration: .5s;
+          animation-delay: 2s;
+          animation-fill-mode: forwards;
+        }
+      }
+    }
+  }
+
+  #logo {
+    opacity: 0;
+    transition: all 1s;
+    transition-delay: .7s;
+    width: 200px;
+
+    &.show {
+      opacity: 1;
+    }
+  }
+
+  #welcome {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+
+    &.show {
+      opacity: 1;
     }
   }
 </style>
