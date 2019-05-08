@@ -46,7 +46,7 @@ export default {
     text-align: center;
   }
 
-  .hide {
+  .hidden {
     display: none !important;
   }
 </style>

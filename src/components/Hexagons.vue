@@ -1,7 +1,8 @@
 <template lang="pug">
-  #hexagons_wrapper(:class="{ hide: hideAll }")
+  #hexagons_wrapper(:class="{ hidden: hideAll }")
     .animator-fade(:class="{ 'animated': animated }")
     #center.hexagon(ref='centerHexagon', @click="animateHexagons", :class="{ 'fade-out': animated }")
+    #click-indicator(:class="{ hide: animated }") Click me
     template(v-for="y in yAxisCount")
       .hexagon(v-for="x in xAxisCount", :style="cordinates(x, y)") {{ y }}
 </template>
@@ -121,6 +122,48 @@ export default {
       &.fade-out {
         background-color: $bg-color;
       }
+    }
+  }
+
+  #click-indicator {
+    display: inline-block;
+    border: 1px solid white;
+    background-color: $bg-color;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 10px;
+    position: fixed;
+    top: calc(50% + 80px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    font-size: 12px;
+    transition: all .5s;
+
+    &.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &:before, &:after {
+      content: '';
+      display: inline-block;
+      border-bottom: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-left: 10px solid transparent;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &:before {
+      border-bottom-color: white;
+      top: -10px;
+    }
+
+    &:after {
+      border-bottom-color: $bg-color;
+      top: -8px;
     }
   }
 

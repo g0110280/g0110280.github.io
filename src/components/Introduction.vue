@@ -1,5 +1,5 @@
 <template lang="pug">
-  #content_wrapper(:class="{ hide: !showWelcome }")
+  #content_wrapper(:class="{ hidden: !showWelcome }")
     img#logo(src="@/assets/logo.png", :class="{ show: welcomeFinished }")
     #welcome.typing_wrapper(:class="{ show: !welcomeFinished }")
       h1 I'm Stream, welcome!
