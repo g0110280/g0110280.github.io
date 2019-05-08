@@ -2,6 +2,7 @@
   #hexagons_wrapper(:class="{ hidden: hideAll }")
     .animator-fade(:class="{ 'animated': animated }")
     #center.hexagon(ref='centerHexagon', @click="animateHexagons", :class="{ 'fade-out': animated }")
+    #wave-effect(:class="{ hide: animated }")
     #click-indicator(:class="{ hide: animated }") Click me
     template(v-for="y in yAxisCount")
       .hexagon(v-for="x in xAxisCount", :style="cordinates(x, y)") {{ y }}
@@ -115,13 +116,50 @@ export default {
     &#center {
       cursor: pointer;
       position: relative;
-      z-index: 4;
+      z-index: 5;
       background-color: $primary;
       transition: all 1s;
 
       &.fade-out {
         background-color: $bg-color;
       }
+    }
+  }
+
+  @keyframes wave {
+    0% {
+      width: $hexagon-width;
+      height: $hexagon-height;
+      opacity: .8;
+    }
+
+    100% {
+      width: $hexagon-width * 1.5;
+      height: $hexagon-height * 1.5;
+      opacity: 0;
+    }
+  }
+
+  #wave-effect {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $primary;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0 25%);
+    display: inline-block;
+    width: $hexagon-width*2;
+    height: $hexagon-height*2;
+    opacity: .5;
+    z-index: 4;
+    animation-name: wave;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    transition: all .5s;
+
+    &.hide {
+      opacity: 0;
+      animation-name: unset;
     }
   }
 
